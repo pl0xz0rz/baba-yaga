@@ -6,6 +6,7 @@ function computeAI(creep){
  	 }
   }
 }
+this.computeAI = computeAI;
 return{
 	computeAI: this.computeAI
 }

@@ -23,7 +23,6 @@ define([
   function loop(game){
    if(Gamestate.active && !Gamestate.paused){
 
-      console.log(game);
       game.draw();
 
       aiLoop(game);
