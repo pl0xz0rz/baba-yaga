@@ -128,7 +128,7 @@ function worldlayer(o=1,l=200){    //0 is static objects only, 1 is dynamic obje
       } else
       if(this.dynamic) {
         for(var i=0;i<this.rl;++i) {
-          var a=this.contents.buffer[i+1];
+          var a=this.contents[i+1];
           if(a) layer.hittestbox(a.x1,a.y1,a.x2,a.y2,function(target){Hittest.narrowphase(a,target,1)});
         }
       }
