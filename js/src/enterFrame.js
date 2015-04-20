@@ -1,68 +1,10 @@
 function renderStuff(){
 
-	obdl.fillStyle="#6699FF";
-	obdl.fillRect(0,0,camera.width,camera.height);
-
-	var i,j,xr,yr;
-	for (i=-1;i<=camera.width / xscale+1;++i){
-		for(j=-1;j<=camera.height / yscale;++j){
-			xr = Math.floor(camera.x) % xscale;
-			yr = Math.floor(camera.y) % yscale;
-			switch(levelmap[Math.floor(camera.x / xscale) + i + (Math.floor(camera.y / yscale) + j) * mapwidth]){
-				case 1:
-					obdl.fillStyle = "#663333"; obdl.fillRect(i * xscale - xr,j * yscale- yr, xscale, yscale);
-				break;
-				case 2:
-					obdl.fillStyle = "#333333"; obdl.fillRect(i * xscale - xr,j * yscale- yr, xscale, yscale);
-				break;
-				case 3:
-					obdl.fillStyle = "#666666"; obdl.fillRect(i * xscale - xr,j * yscale- yr, xscale, yscale);
-				break;
-				case 4:
-					obdl.fillStyle = "#669966"; obdl.fillRect(i * xscale - xr,j * yscale- yr, xscale, yscale);
-				break;
-				case 6:
-					obdl.fillStyle = "#CCCC66"; obdl.fillRect(i * xscale - xr,j * yscale- yr, xscale, yscale);
-				break;
-				case 8:
-					obdl.fillStyle = "#6699CC"; obdl.fillRect(i * xscale - xr,j * yscale- yr, xscale, yscale);
-				break;
-				case 10:
-					obdl.fillStyle = "#333366"; obdl.fillRect(i * xscale - xr,j * yscale- yr, xscale, yscale);
-				break;
-				case 11:
-					obdl.fillStyle = "#666699"; obdl.fillRect(i * xscale - xr,j * yscale- yr, xscale, yscale);
-				break;
-				case 16:
-//					obdl.drawImage(wall1,i*xscale-xr,j*yscale-yr);
-				break;
-				case 32:
-					obdl.fillStyle = "#999933"; obdl.fillRect(i * xscale - xr,j * yscale- yr, xscale, yscale);
-				break;
-				case 33:
-				case 40:
-					obdl.fillStyle = "#996633"; obdl.fillRect(i * xscale - xr,j * yscale- yr, xscale, yscale);
-				break;
-
-
-			}
-		}
-	}
-
-	for (i=0;i<displayObjects.length;++i){
-		obdl.beginPath();
-		displayObjects[i].render();
-	}
-
 	obdl.strokeStyle = "#FF3333";
 	obdl.fillStyle = "#993333";
 	obdl.lineWidth = 1;
 	obdl.strokeRect(30,30,104,20);
 	obdl.fillRect(32,32,protagonist.hp / protagonist.maxhp * 100, 16);
-
-
-		obdl.lineWidth = 3;
-
 
 }
 

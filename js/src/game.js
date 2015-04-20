@@ -23,36 +23,52 @@ define([
     console.log(canvas);
     console.log(this.drawcontext);
 
-    var camera = [0, 3, 20, 17, 32, 32, 0, 0];
+    var camera = {
+      x : 0,
+      y : 0,
+      sw : 20,
+      sh : 17,
+      tw : 32,
+      th : 32,
+      xoff : 0,
+      yoff : 0,
+      xmin : 0,
+      ymin : 0,
+      xmax : 40,
+      ymax : 3
+    };
 
     function draw(){
       var context = this.drawcontext;
       context.fillStyle = "#336666";
       context.fillRect(0,0,600,400);
-      camera[0] = Math.floor(this.protagonist.x / 32) - 10;
-      camera[1] = Math.floor(this.protagonist.y / 32) - 8;
-      camera[6] = Math.floor(this.protagonist.x) % 32;
-      camera[7] = Math.floor(this.protagonist.y) % 32;
+      camera.x = Math.floor(this.protagonist.x / 32) - 10;
+      camera.y = Math.floor(this.protagonist.y / 32) - 8;
+      camera.xoff = Math.floor(this.protagonist.x) % 32;
+      camera.yoff = Math.floor(this.protagonist.y) % 32;
+      if(camera.x < camera.xmin) {camera.x = camera.xmin;camera.xoff = 0;}
+      if(camera.y < camera.ymin) {camera.y = camera.ymin;camera.yoff = 0;}
+      if(camera.x > camera.xmax) {camera.x = camera.xmax;camera.xoff = 0;}
+      if(camera.y > camera.ymax) {camera.y = camera.ymax;camera.yoff = 0;}
       var m = maps[this.mapurl]
       $.each(m.layers,function(ln,layer){
-        for(var i=0;i<camera[2];++i){
-          for(var j=0;j<camera[3];++j){
-              var c = layer.data[i + camera[0] + (j + camera[1]) * layer.width];
+        for(var i=0;i<camera.sw;++i){
+          for(var j=0;j<camera.sh;++j){
+              var c = layer.data[i + camera.x + (j + camera.y) * layer.width];
               if(c){if(c > 80) c -= 80;
               c -= 1;
               var tx = c % (m.tilesets[ln].imagewidth / 32);
               var ty = Math.floor(c / (m.tilesets[ln].imagewidth / 32));
               context.drawImage(document.getElementById(m.tilesets[ln].name),tx*32,ty*32,m.tilesets[ln].tilewidth,m.tilesets[ln].tileheight,
-                                          i * camera[4] - camera[6],
-                                          j * camera[5] - camera[7],
-                                          camera[4],
-                                          camera[5]);
-              console.log(c);
+                                          i * camera.tw - camera.xoff,
+                                          j * camera.th - camera.yoff,
+                                          camera.tw,
+                                          camera.th);
             }
           }
         }
       });
-      this.world.draw(context,camera[0]*32 + camera[6],camera[1]*32 + camera[7],600,400,0,0,600,400);
+      this.world.draw(context,camera.x*32 + camera.xoff,camera.y*32 + camera.yoff,600,400,0,0,600,400);
     }
 
     function init(){

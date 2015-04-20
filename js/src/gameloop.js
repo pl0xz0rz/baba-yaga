@@ -16,7 +16,7 @@ define([
   	if(this.kbMap['W'.charCodeAt(0)] || this.kbMap[38]) game.protagonist.jump();
   	}
   	for(i=0;i<game.npcs.length;++i){
-  		computeAI(game.npcs[i]);
+  		AIscript.computeAI(game.npcs[i]);
   	}
   }
 
