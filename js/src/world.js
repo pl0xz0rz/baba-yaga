@@ -58,8 +58,6 @@ function world(){
     for(var i=0;i<16;++i){
       if(this.layers[i].active)
       for(var j=0;j<16;++j){
-          console.log(i);
-          console.log(j);
           if(this.layers[j].flags & k) this.layers[j].hittestlayer(this.layers[i]);
       }
       k *= 2;
@@ -68,12 +66,10 @@ function world(){
     for(var i=0;i<16;++i){
 
       if(this.layers[i].active){
-        console.log(i);
         if(this.layers[i].bullets) {a=this.layers[i].contents;}
         else a=this.layers[i].contents.buffer;
         for(j=a.length+1;j>=0;--j){
           if(a[j]) {
-            console.log(a[j]);
             a[j].updateFrame();
             a[j].po.vy += this.g;
           }

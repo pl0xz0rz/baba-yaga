@@ -81,14 +81,14 @@ require([
       return false;
     });
     $(".newgame").click(function(){
-      Game.init();
+      gg.init();
       return false;
     });
     var maincanvas = document.getElementById("maincanvas");;
-    Game.drawcontext = maincanvas.getContext("2d");
+    var gg = new Game.Game(maincanvas)
     Menu.switchScr(0);
     var playtime = 0;
-  	Gameloop.loop();
+  	Gameloop.loop(gg);
   	cinterval = setInterval(function(){if(!Gamestate.paused){++ playtime;/*playtimespan.innerHTML = playtime*/}},1000);
   });
 });
