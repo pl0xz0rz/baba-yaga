@@ -1,15 +1,13 @@
 define([
-  "$"
+  "jquery",
   "world",
   "gamestate",
-  "tmxjs/map",
   "menu",
   "ingameobjects"
 ],function(
-  $,
+  Jquery,
   World,
   Gamestate,
-  Map,
   Menu,
   IngameObjects
 ){
