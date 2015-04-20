@@ -1,10 +1,8 @@
 require.config({
   paths: {
     "jquery": "lib/jquery",
-    "zlib": "lib/zlib.min",
-    "tmxjs": "lib/tmxjs",
     "hittest": "lib/pl0xz0rz/hittest",
-    "world": "lib/pl0xz0rz/world",
+    "world": "src/world",
     "menu": "src/menu",
     "sounds": "src/sounds",
     "gamestate": "src/gamestate",
@@ -21,7 +19,6 @@ require.config({
 
 require([
   "jquery",
-  "tmxjs/map",
   "world",
   "menu",
   "sounds",
@@ -30,7 +27,6 @@ require([
   "game"
 ], function (
   $,
-  Map,
   World,
   Menu,
   Sounds,
@@ -38,16 +34,7 @@ require([
   Gameloop,
   Game
 ){
-/*  var url="map2.tmx";
-  var options = {
-    dir: url.split("/").slice(0, -1) || "."
-  };
 
-  $.get(url, {}, null, "xml").done(function(xml){
-    Map.fromXML(xml, options).done(function(map){
-      console.log("Map loaded");
-    });
-  });*/
   Menu.menuList[0] = introMenu;
   Menu.menuList[1] = hra;
   Menu.menuList[2] = settings;

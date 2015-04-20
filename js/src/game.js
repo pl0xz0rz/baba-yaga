@@ -1,10 +1,12 @@
 define([
+  "$"
   "world",
   "gamestate",
   "tmxjs/map",
   "menu",
   "ingameobjects"
 ],function(
+  $,
   World,
   Gamestate,
   Map,
@@ -12,6 +14,7 @@ define([
   IngameObjects
 ){
 
+  var maps = [];
 
   function Game(){
     this.map = null;
@@ -50,20 +53,13 @@ define([
   }
 
   function init(){
-    var url = "res/map2.tmx";
-    var options = {
-        dir: url.split("/").slice(0, -1) || "."
-    };
 
-    $.get(url, {}, null, "xml").done(function (xml) {
-        // fromXML calls are asynchronous because TSX resources may need to be loaded by TMXjs.
-        Map.fromXML(xml, options).done(function (map) {
-            Game.map = map;
-            Menu.switchScr(1);
-            Gamestate.active = true;
-            Gamestate.endcondition = 0;
-        });
-    });
+    var url = "res/map2.tmx";
+    if(!maps[url]){
+
+    }
+
+
     this.protagonist = new IngameObjects.GenericMob(32*30,100,0,3,20,20);
     this.world = new World.world();
     this.world.push(this.protagonist,1);
