@@ -34,15 +34,38 @@ define([
       yoff : 0,
       xmin : 0,
       ymin : 0,
-      xmax : 40,
+      xmax : 41,
       ymax : 3
     };
 
+    this.camera = camera;
+
     function mapcollisions(){
       var m = maps[this.mapurl];
-      $.each(this.world.layers,function(ln,layer){
-        $.each(m.layers,function(ln,layer){
-
+      $.each(this.world.layers,function(wln,worldlayer){
+        if(!worldlayer.active) return true;
+        $.each(m.layers,function(tln,tilelayer){
+          $.each(worldlayer.contents,function(i,object){
+            if(!object || !object.exists) return true;
+            var x;
+            var y;
+            var terrain;
+            var tileid;
+            for (var k=0;k<=object.po.width / 32 + 2;++k){                       //TODO: Get rid of these magic numbers
+        			for(var j=0;j<=object.po.height / 32 + 2;++j){
+                x = (Math.floor(object.po.x / 32) + k) * 32;
+                y = (Math.floor(object.po.y / 32) + j) * 32;
+                for(var i=0;i<4;++i){
+                  tileid = tilelayer.data[Math.floor(object.po.x / 32) + k + (Math.floor(object.po.y / 32) + j) * tilelayer.width];
+                  if(tileid <= 80 && tileid > 0) terrain = m.tilesets[0].tiles[tileid-1].terrain[i]
+                  else terrain = -1;
+                  if(i & 1) x += 16;
+                  if(i & 2) y += 16;
+        				  object.mapcollision(x,y,terrain,i);
+                }
+        			}
+            }
+          });
         });
       });
     }
@@ -94,7 +117,7 @@ define([
       }
 
 
-      this.protagonist = new IngameObjects.GenericMob(32*30,100,0,3,20,20);
+      this.protagonist = new IngameObjects.GenericMob(32*30,100,0,1,20,20);
       this.world = new World.world();
       this.world.push(this.protagonist,1);
       this.npcs = new Array();
@@ -123,6 +146,7 @@ define([
     this.draw = draw;
     this.init = init;
     this.end = end;
+    this.mapcollisions = mapcollisions;
 
   }
 

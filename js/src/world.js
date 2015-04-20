@@ -69,7 +69,7 @@ function world(){
         for(j=a.length+1;j>=0;--j){
           if(a[j]) {
             a[j].updateFrame();
-            a[j].po.vy += this.g;
+//            a[j].po.vy += this.g;
           }
         }
       }

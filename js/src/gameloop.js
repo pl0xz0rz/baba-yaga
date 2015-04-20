@@ -23,6 +23,7 @@ define([
   function loop(game){
    if(Gamestate.active && !Gamestate.paused){
 
+     game.mapcollisions();
       game.draw();
 
       aiLoop(game);

@@ -123,6 +123,9 @@ function GenericMob(x,y,t,str,hp,mana){
 		this.animationlength=[4,4,0,0,0,0,0,0];
 	break;
 	case 1:
+	  this.width = 15;
+		this.height = 45;
+		this.animationlength=[1,1,0,0,0,0,0,0];
 	break;
 	case 132:
 	break;
@@ -144,7 +147,7 @@ function GenericMob(x,y,t,str,hp,mana){
    	switch(this.t){
 		case 0: context.drawImage(witch,this.width*this.frame,this.height*this.currentaction,this.width,this.height,this.x-ox-this.width/2,this.y-oy-this.height/2,this.width,this.height);
 		break;
-		case 1: context.fillStyle="#66CC33"; context.fillRect(this.x - ox - this.width / 2,this.y - oy - this.height / 2,this.po.width, this.po.height);
+		case 1: context.drawImage(zombie,this.width*this.frame,this.height*this.currentaction,this.width,this.height,this.x-ox-this.width/2,this.y-oy-this.height/2,this.width,this.height);
 		break;
 		default: 	context.fillStyle="#999999"; context.fillRect(this.x - ox - this.width / 2,this.y - oy - this.height / 2,this.po.width, this.po.height);
 
@@ -276,26 +279,32 @@ function GenericMob(x,y,t,str,hp,mana){
   }
 
   this.mapcollision = mapcollision;
-  function mapcollision(x,y,ln,tn){
-	var a;
-	var rx,ry;
-	var id;
-	rx = (Math.floor(this.po.x / 32) + x) * 32;
-	ry = (Math.floor(this.po.y / 32) + y) * 32;
-		if(levelmap[id] & 1){
-			if(this.po.y + this.po.height > ry && this.po.y < ry + yscale && this.po.x + this.po.width > rx && this.po.x < rx + xscale) {
-			if(this.po.y + this.po.height < ry + yscale / 2)
-				{  this.po.y = ry - this.po.height;   this.po.svy = -.1; this.po.say = 0; this.po.vy = 0; this.po.ay = 0; this.po.vx *= .8;  this.po.svx *= .8;this.nazemi = 2; } else
-			if(this.po.x + this.po.width  < rx + xscale / 2)
-				{  this.po.x = rx - this.po.width;   this.po.svx = -.1; this.po.sax = 0; this.po.vx = 0; this.po.ax = 0; this.po.vy *= .8; this.po.svy *= .8} else
-			if(this.po.x > rx + xscale / 2)
-				{  this.po.x = rx + xscale;   this.po.vx = .1; this.po.sax = 0; this.po.svx = 0; this.po.ax = 0; this.po.vy *= .8; this.po.svy *= .8; } else
-			if(this.po.y > ry + xscale / 2)
-				{  this.po.y = ry + yscale;   this.po.vy = .1; this.po.say = 0; this.po.svy = 0; this.po.ay = 0; this.po.vx *= .8; this.po.svx *= .8; } else
-					{  this.po.y = ry - this.po.height;   this.po.svy = -.1; this.po.say = 0; this.po.vy = 0; this.po.ay = 0; this.po.vx *= .8;  this.po.svx *= .8;this.nazemi = 2; }
+  function mapcollision(x,y,terrain,q){
+		var rx = x;
+		var ry = y;
+		var xscale = 16;
+		var yscale = 16;
+			switch(terrain){
+					case 1:
+					case 3:
+					if(this.po.y + this.po.height > ry && this.po.y < ry + yscale && this.po.x + this.po.width > rx && this.po.x < rx + xscale) {
+					if(q & 2)
+						{  this.po.y = ry - this.po.height;   this.po.svy = -.1; this.po.say = 0; this.po.vy = 0; this.po.ay = 0; this.po.vx *= .8;  this.po.svx *= .8;this.nazemi = 2; } else
+					if(q & 1)
+						{  this.po.x = rx - this.po.width;   this.po.svx = -.1; this.po.sax = 0; this.po.vx = 0; this.po.ax = 0; this.po.vy *= .8; this.po.svy *= .8} else
+					if(q & 1 === 0)
+						{  this.po.x = rx + xscale;   this.po.vx = .1; this.po.sax = 0; this.po.svx = 0; this.po.ax = 0; this.po.vy *= .8; this.po.svy *= .8; } else
+					if(q & 2 === 0)
+						{  this.po.y = ry + yscale;   this.po.vy = .1; this.po.say = 0; this.po.svy = 0; this.po.ay = 0; this.po.vx *= .8; this.po.svx *= .8; } else
+							{  this.po.y = ry - this.po.height;   this.po.svy = -.1; this.po.say = 0; this.po.vy = 0; this.po.ay = 0; this.po.vx *= .8;  this.po.svx *= .8;this.nazemi = 2; }
+					}
+					break;
+					case 4:
+					if(this.po.y + this.po.height > ry && this.po.y < ry + yscale && this.po.x + this.po.width > rx && this.po.x < rx + xscale) {
+						{ this.po.y = ry - this.po.height;   this.po.svy = -.1; this.po.say = 0; this.po.vy = 0; this.po.ay = 0; this.po.vx *= .8;  this.po.svx *= .8;this.nazemi = 1; }
+					}
+					break;
 			}
-
-	}
   }
 
 	this.selfdestruct = selfdestruct;
@@ -347,6 +356,8 @@ function Bullet(x,y,r,vx,vy,immunity){
 		drawcontext.arc(this.x - camera.x,this.y - camera.y,this.r,0,2*Math.PI);
 		drawcontext.fill();
 	}
+
+	this.po = new PhysicsObject(x,y,vx,vy,3,3);
 }
 
 function item(id,amount){

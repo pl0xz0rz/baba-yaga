@@ -55,7 +55,7 @@ require([
   	}).keyup(function(event){
       kbMap[event.which] = false;  		Gameloop.kbMap[event.which] = false;
   	}).mouseup(function(event){
-  		if(!Gamestate.paused && Gamestate.active) protagonist.action(xmouse + camera.x,ymouse + camera.y);
+  		if(!Gamestate.paused && Gamestate.active) gg.protagonist.action(xmouse + gg.camera.x,ymouse + gg.camera.y);
   	}).mousemove(function(event){
   		xmouse = event.clientX - maincanvas.offsetLeft;
   		ymouse = event.clientY - maincanvas.offsetTop;
