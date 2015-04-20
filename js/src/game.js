@@ -38,7 +38,16 @@ define([
       ymax : 3
     };
 
-    function draw(){
+    function mapcollisions(){
+      var m = maps[this.mapurl];
+      $.each(this.world.layers,function(ln,layer){
+        $.each(m.layers,function(ln,layer){
+
+        });
+      });
+    }
+
+    function draw(t=0){
       var context = this.drawcontext;
       context.fillStyle = "#336666";
       context.fillRect(0,0,600,400);

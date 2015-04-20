@@ -33,8 +33,7 @@ function world(){
     var a;
     for(var i=0;i<16;++i){
       if(this.layers[i].visible){
-        if(this.layers[i].bullets) {a=this.layers[i].contents;}
-        else a=this.layers[i].contents.buffer;
+        a=this.layers[i].contents;
         for(j=a.length+1;j>=0;--j){
           if(a[j]) {
             a[j].render(context,xA,yA);
@@ -66,8 +65,7 @@ function world(){
     for(var i=0;i<16;++i){
 
       if(this.layers[i].active){
-        if(this.layers[i].bullets) {a=this.layers[i].contents;}
-        else a=this.layers[i].contents.buffer;
+        a=this.layers[i].contents;
         for(j=a.length+1;j>=0;--j){
           if(a[j]) {
             a[j].updateFrame();
@@ -98,7 +96,10 @@ function worldlayer(o=1,l=200){    //0 is static objects only, 1 is dynamic obje
   this.rl = 0;
   if(this.bullets){
     this.contents = new Array();
-  } else this.contents = new Hittest.Bih2d(l);
+  } else {
+    this.helpstructure = new Hittest.Bih2d(l);
+    this.contents = this.helpstructure.buffer;
+  }
 
   this.push = push;
   function push(item){
@@ -113,7 +114,7 @@ function worldlayer(o=1,l=200){    //0 is static objects only, 1 is dynamic obje
     		if(!this.contents[i].exists) {this.contents[i] = this.contents[this.contents.length - 1]; this.contents.pop();--i}
     	}
     } else {
-      this.contents.sort();
+      this.helpstructure.sort();
     }
   }
 
@@ -140,9 +141,9 @@ function worldlayer(o=1,l=200){    //0 is static objects only, 1 is dynamic obje
         if(this.bullets){
           throw "Cannot perform collision detection against this layer";
         } else{
-          var n=this.contents.search(Hittest.Rect(left,top,right,bottom));
+          var n=this.helpstructure.search(Hittest.Rect(left,top,right,bottom));
           for(var i=0;i<n;++i){
-            action(this.contents.buffer[this.contents.temparray[i]]);
+            action(this.contents[this.helpstructure.temparray[i]]);
           }
         }
       }
