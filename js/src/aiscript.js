@@ -21,10 +21,12 @@ function DirectorAI(startgold,goldgain,units,layer){
 
   this.turn = turn;
   function turn(){
-    for(var i=this.units.length-1;i>=0;--i){
-      if(this.gold > this.units[i].cost) this.summon(this.units[i],Math.random()*60*32,0);
-      this.gold += this.goldgain;
+    while(this.gold > this.units[0].cost){
+      for(var i=this.units.length-1;i>=0;--i){
+        if(this.gold > this.units[i].cost) this.summon(this.units[i],Math.random()*60*32,0);
+      }
     }
+    this.gold += this.goldgain;
   }
 
 

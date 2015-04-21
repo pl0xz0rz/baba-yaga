@@ -12,13 +12,10 @@ function world(){
   this.layers[12] = new worldlayer(2);
   this.layers[11] = new worldlayer(2);
 
-  this.layers[1].flags |= 0x1c;
-  this.layers[2].flags |= 0x1f;
-  this.layers[3].flags |= 0x1f;
-  this.layers[4].flags |= 0x0d;
+  this.layers[1].flags |= 0xc;
+  this.layers[2].flags |= 0xa;
+  this.layers[3].flags |= 0x6;
 
-  this.layers[15].flags |= 0x1c;
-  this.layers[14].flags |= 0x16;
 
   this.g = .2;
   this.f = .95;
@@ -52,15 +49,6 @@ function world(){
 
   this.loop = loop;
   function loop(dt=1){
-    this.sort();
-    var k=1;
-    for(var i=0;i<16;++i){
-      if(this.layers[i].active)
-      for(var j=0;j<16;++j){
-          if(this.layers[j].flags & k) this.layers[j].hittestlayer(this.layers[i]);
-      }
-      k *= 2;
-    }
     var a;
     for(var i=0;i<16;++i){
 
@@ -74,6 +62,18 @@ function world(){
         }
       }
     }
+    this.sort();
+    var k=1;
+    for(var i=0;i<16;++i){
+      if(this.layers[i].active)
+      for(var j=0;j<16;++j){
+          if(this.layers[j].flags & k) {
+            this.layers[j].hittestlayer(this.layers[i]);
+        }
+      }
+      k *= 2;
+    }
+
 /*
 TODO: Write a constraint solver
 */
@@ -131,7 +131,7 @@ function worldlayer(o=1,l=200){    //0 is static objects only, 1 is dynamic obje
         for(var i=0;i<this.rl;++i) {
           var a=this.contents[i+1];
           for(var j=0;j<layer.contents.length;++j){
-            if(Hittest.narrowPhase(a,layer.contents[j+1],1)) a.hit(layer.contents[j+1]);
+            Hittest.narrowPhase(a,layer.contents[j+1],1);
           }
         }
       }

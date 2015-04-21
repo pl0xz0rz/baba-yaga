@@ -32,6 +32,8 @@ define([
       aiLoop(game);
       game.world.loop();
 
+      game.undeadleader.goldgain += .001;
+
       if(game.gameoverTimer > 0) game.gameoverTimer--;
       if((Gamestate.endcondition !== 0) && (game.gameoverTimer < 0)) {game.gameoverTimer = 100;console.log(Gamestate)};
       if(game.gameoverTimer == 0) game.end();

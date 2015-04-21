@@ -35,7 +35,7 @@ function narrowPhase(from,to,type){
 					to.po.translate(0,pen * m2);
 				}
 			}
-			console.log(from.hit(to));
+			from.hit(to);
 			return true;
 
 		break;

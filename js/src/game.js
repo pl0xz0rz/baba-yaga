@@ -22,7 +22,7 @@ define([
 
     this.mapurl="";
     this.world = new World.world();
-    this.gameovertimer = -1;
+    this.gameoverTimer = -1;
 
     this.drawcontext=canvas.getContext("2d");
     console.log(canvas);
@@ -127,7 +127,7 @@ define([
       }
 
 
-      this.protagonist = new IngameObjects.GenericMob(32*30,100,0,1,20,20);
+      this.protagonist = new IngameObjects.GenericMob(32*30,100,0,1.6,20,20);
       this.skull = new IngameObjects.GenericMob(32*27,100,2,1,20,20);
       this.world = new World.world();
       this.world.push(this.protagonist,1);
@@ -141,7 +141,7 @@ define([
         this.world.layers[i].active = true;
         this.world.layers[i].visible = true;
       }
-      this.gameovertimer = -1;
+      this.gameoverTimer = -1;
 
 
     }

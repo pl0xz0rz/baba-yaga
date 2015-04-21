@@ -282,16 +282,16 @@ function GenericMob(x,y,t,str,hp,mana){
 
   this.hit = hit;
   function hit(by){
-		console.log(this.t);
-		console.log(by.t);
 		switch(this.t){
 			case 0:
   		switch(by.t){
 				case 1:
 					Gamestate.endcondition = 1;
+					this.exists = false;
 				break;
 				case 2:
 				  Gamestate.endcondition = 2;
+					this.exists = false;
 		    break;
 	    }
 			break;
@@ -302,7 +302,6 @@ function GenericMob(x,y,t,str,hp,mana){
 				break;
 				case 2:
 					this.exists = false;
-					console.log(this);
 		    break;
 	    }
 			break;
@@ -310,6 +309,10 @@ function GenericMob(x,y,t,str,hp,mana){
 			switch(by.t){
 				case 0:
 					Gamestate.endcondition = 2;
+					by.exists = false;
+				break;
+				case 1:
+				  by.exists = false;
 				break;
 			}
 			default: return false;
@@ -343,6 +346,13 @@ function GenericMob(x,y,t,str,hp,mana){
 						{ this.po.y = ry - this.po.height;   this.po.svy = -.1; this.po.say = 0; this.po.vy = 0; this.po.ay = 0; this.po.vx *= .8;  this.po.svx *= .8;this.nazemi = 1; }
 					}
 					break;
+					case 0:
+					this.po.vx *= .99;
+					this.po.vy *= .99;
+					break;
+					case 2:
+					this.po.vx *= .995;
+					this.po.vy *= .995;
 			}
   }
 
