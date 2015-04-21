@@ -13,8 +13,8 @@ function world(){
   this.layers[11] = new worldlayer(2);
 
   this.layers[1].flags |= 0x1c;
-  this.layers[2].flags |= 0x1a;
-  this.layers[3].flags |= 0x16;
+  this.layers[2].flags |= 0x1f;
+  this.layers[3].flags |= 0x1f;
   this.layers[4].flags |= 0x0d;
 
   this.layers[15].flags |= 0x1c;
@@ -123,13 +123,16 @@ function worldlayer(o=1,l=200){    //0 is static objects only, 1 is dynamic obje
       if(this.bullets) {
         for(var i=0;i<this.rl;++i) {
           var a=this.contents[i];
-          if(a) layer.hittestbox(a.x1,a.y1,a.x2,a.y2,function(target){Hittest.narrowphase(a,target,1)});
+
+          if(a) layer.hittestbox(a.x1,a.y1,a.x2,a.y2,function(target){Hittest.narrowPhase(a,target,1)});
         }
       } else
       if(this.dynamic) {
         for(var i=0;i<this.rl;++i) {
           var a=this.contents[i+1];
-          if(a) layer.hittestbox(a.x1,a.y1,a.x2,a.y2,function(target){Hittest.narrowphase(a,target,1)});
+          for(var j=0;j<layer.contents.length;++j){
+            if(Hittest.narrowPhase(a,layer.contents[j+1],1)) a.hit(layer.contents[j+1]);
+          }
         }
       }
       else throw "Cannot perform collision detection from this layer";
@@ -141,9 +144,8 @@ function worldlayer(o=1,l=200){    //0 is static objects only, 1 is dynamic obje
         if(this.bullets){
           throw "Cannot perform collision detection against this layer";
         } else{
-          var n=this.helpstructure.search(Hittest.Rect(left,top,right,bottom));
-          for(var i=0;i<n;++i){
-            action(this.contents[this.helpstructure.temparray[i]]);
+          for(var i=0;i<this.contents.length;++i){
+            if(this.contents[i]) action(this.contents[i]);
           }
         }
       }

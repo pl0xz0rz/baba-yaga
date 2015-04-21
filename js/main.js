@@ -9,7 +9,8 @@ require.config({
     "gameloop": "src/gameloop",
     "game": "src/game",
     "aiscript": "src/aiscript",
-    "ingameobjects": "src/ingameObjects"
+    "ingameobjects": "src/ingameObjects",
+    "rtsunits": "src/rtsunits"
   },
   shim: {
     zlib: { exports: "Zlib"}
@@ -41,6 +42,8 @@ require([
   Menu.menuList[3] = prehra;
   Menu.menuList[5] = vyhra;
 
+  console.log(zombie);
+
   var kbMap = new Array(256);
 
   $(document).ready(function(){
@@ -54,8 +57,6 @@ require([
   		}
   	}).keyup(function(event){
       kbMap[event.which] = false;  		Gameloop.kbMap[event.which] = false;
-  	}).mouseup(function(event){
-  		if(!Gamestate.paused && Gamestate.active) gg.protagonist.action(xmouse + gg.camera.x,ymouse + gg.camera.y);
   	}).mousemove(function(event){
   		xmouse = event.clientX - maincanvas.offsetLeft;
   		ymouse = event.clientY - maincanvas.offsetTop;

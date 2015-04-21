@@ -3,13 +3,17 @@ define([
   "world",
   "gamestate",
   "menu",
-  "ingameobjects"
+  "ingameobjects",
+  "aiscript",
+  "rtsunits"
 ],function(
   Jquery,
   World,
   Gamestate,
   Menu,
-  IngameObjects
+  IngameObjects,
+  AIscript,
+  RTSunits
 ){
 
   var maps = [];
@@ -18,10 +22,13 @@ define([
 
     this.mapurl="";
     this.world = new World.world();
+    this.gameovertimer = -1;
 
     this.drawcontext=canvas.getContext("2d");
     console.log(canvas);
     console.log(this.drawcontext);
+
+    this.undeadleader = null;
 
     var camera = {
       x : 0,
@@ -109,23 +116,32 @@ define([
       if(!maps[this.mapurl]){
         $.get(this.mapurl, {}, null,"json").done(function(data){
           maps[url] = data;
-          console.log(data);
           Gamestate.active = true;
           Gamestate.endcondition = 0;
           Menu.switchScr(1);
         });
+      } else {
+        Gamestate.active = true;
+        Gamestate.endcondition = 0;
+        Menu.switchScr(1);
       }
 
 
       this.protagonist = new IngameObjects.GenericMob(32*30,100,0,1,20,20);
+      this.skull = new IngameObjects.GenericMob(32*27,100,2,1,20,20);
       this.world = new World.world();
       this.world.push(this.protagonist,1);
+      this.world.push(this.skull,3);
       this.npcs = new Array();
 
+      console.log(AIscript);
+
+      this.undeadleader = new AIscript.DirectorAI(100,1,[RTSunits.normalzombie],this.world.layers[2]);
       for(var i=1;i<16;++i){
         this.world.layers[i].active = true;
         this.world.layers[i].visible = true;
       }
+      this.gameovertimer = -1;
 
 
     }
@@ -138,6 +154,14 @@ define([
         case 1:
           Gamestate.active = 0;
           Menu.switchScr(3);
+        break;
+        case 2:
+          Gamestate.active = 0;
+          Menu.switchScr(3);
+        break;
+        case 3:
+        Gamestate.active = 0;
+        Menu.switchScr(3);
         break;
       }
 

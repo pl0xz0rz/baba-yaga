@@ -1,4 +1,4 @@
-define(["world"],function(World){
+define(["world","gamestate"],function(World,Gamestate){
 
 function PhysicsObject(x,y,vx,vy,width,height){
 
@@ -74,6 +74,12 @@ function PhysicsObject(x,y,vx,vy,width,height){
 
 		}
 
+		this.translate = translate;
+		function translate(x,y){
+			this.x += x;
+			this.y += y;
+		}
+
 }
 
 function GenericMob(x,y,t,str,hp,mana){
@@ -127,6 +133,11 @@ function GenericMob(x,y,t,str,hp,mana){
 		this.height = 45;
 		this.animationlength=[1,1,0,0,0,0,0,0];
 	break;
+	case 2:
+		this.width = 20;
+		this.height = 20;
+		this.animationlength=[1,1,0,0,0,0,0,0];
+	break;
 	case 132:
 	break;
 	default:
@@ -135,6 +146,11 @@ function GenericMob(x,y,t,str,hp,mana){
   }
 
 	this.po = new PhysicsObject(x,y,0,0,this.width,this.height);
+
+	this.x1 = this.po.x1;
+	this.y1 = this.po.y1;
+	this.x2 = this.po.x2;
+	this.y2 = this.po.y2;
 
   this.render = render;
   function render(context,ox,oy){
@@ -148,6 +164,8 @@ function GenericMob(x,y,t,str,hp,mana){
 		case 0: context.drawImage(witch,this.width*this.frame,this.height*this.currentaction,this.width,this.height,this.x-ox-this.width/2,this.y-oy-this.height/2,this.width,this.height);
 		break;
 		case 1: context.drawImage(zombie,this.width*this.frame,this.height*this.currentaction,this.width,this.height,this.x-ox-this.width/2,this.y-oy-this.height/2,this.width,this.height);
+		break;
+		case 2: context.drawImage(skull,this.width*this.frame,this.height*this.currentaction,this.width,this.height,this.x-ox-this.width/2,this.y-oy-this.height/2,this.width,this.height);
 		break;
 		default: 	context.fillStyle="#999999"; context.fillRect(this.x - ox - this.width / 2,this.y - oy - this.height / 2,this.po.width, this.po.height);
 
@@ -205,7 +223,7 @@ function GenericMob(x,y,t,str,hp,mana){
   function seek(x,y){
     var dx = x - this.x;
     var dy = y - this.y;
-    var pa = this.str/Math.sqrt(dx * dx + dy * dy);
+    var pa = 2 * this.str/Math.sqrt(dx * dx + dy * dy);
     if(pa){
       this.po.vx += dx * pa;
       this.po.svx += dx * pa;
@@ -264,18 +282,39 @@ function GenericMob(x,y,t,str,hp,mana){
 
   this.hit = hit;
   function hit(by){
-	this.xn = 0;
-	this.yn = 0;
-	if(by.po.x                              >= this.po.x + this.po.width ) this.xn = -1;
-	if(by.po.y                              >= this.po.x + this.po.height) this.yn = -1;
-	if(by.po.x + by.po.width  <= this.po.x                 ) this.xn =  1;
-	if(by.po.y + by.po.height <= this.po.y                 ) this.yn =  1;
-  	switch(by.t){
-		case 0:
-		case 1:
-			this.hp -= 1;
-		break;
+		console.log(this.t);
+		console.log(by.t);
+		switch(this.t){
+			case 0:
+  		switch(by.t){
+				case 1:
+					Gamestate.endcondition = 1;
+				break;
+				case 2:
+				  Gamestate.endcondition = 2;
+		    break;
+	    }
+			break;
+			case 1:
+			switch(by.t){
+				case 0:
+					Gamestate.endcondition = 1;
+				break;
+				case 2:
+					this.exists = false;
+					console.log(this);
+		    break;
+	    }
+			break;
+			case 2:
+			switch(by.t){
+				case 0:
+					Gamestate.endcondition = 2;
+				break;
+			}
+			default: return false;
 	  }
+		return true;
   }
 
   this.mapcollision = mapcollision;

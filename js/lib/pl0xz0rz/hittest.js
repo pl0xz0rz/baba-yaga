@@ -1,247 +1,43 @@
 define(function(){
 
 function narrowPhase(from,to,type){
+	//if(from === to) return false;
 	switch(type){
-		case 0:
-			if (from.x + from.width <= to.x){
-				if (from.y + from.height <= to.y){
-					if (segmentIntersection(from.x,from.y + from.height,to.x,to.y,from.vx + from.ax / 2,from.svy + from.say / 2,to.width,0) ||
-					   segmentIntersection(to.x,to.y,from.x,from.y + from.height,-from.vx - from.ax / 2,-from.svy - from.say / 2,from.width,0)){ //From top
-						from.vx *= .5;
-						from.vax *= .5;
-						from.svx *= .5;
-						from.sax *= .5;
-						from.say *= -.1;
-						from.svy *= -.1;
-						return true;
-					} else if(segmentIntersection(from.x + from.width,from.y,to.x,to.y,from.svx + from.sax / 2,from.vy + from.ay / 2,0,to.height) ||
-							 segmentIntersection(to.x,to.y,from.x + from.width,from.y,-from.svx - from.sax / 2,-from.vy - from.ay / 2,0,from.height)){ //From left
-						from.vy *= .5;
-						from.ay *= .5;
-						from.svy *= .5;
-						from.sax *= -.1;
-						from.svx *= -.1;
-						return true;
-					} else return false;
-				} else if (from.y >= to.y + to.height){
-					if (segmentIntersection(from.x,from.y,to.x,to.y + to.height,from.svx + from.sax / 2,from.vy + from.ay / 2,to.width,0) ||
-					   segmentIntersection(to.x,to.y + to.height,from.x,from.y,-from.vx - from.ax / 2,-from.vy - from.ay / 2,from.height,0)){  //From bottom
-						from.vx *= .5;
-						from.svx *= .5;
-						from.ay *= -.1;
-						from.vy *= -.1;
-						return true;
-					} else if(segmentIntersection(from.x + from.width,from.y,to.x,to.y,from.svx + from.sax / 2,from.vy + from.ay / 2,0,to.height) ||
-							 segmentIntersection(to.x,to.y,from.x + from.width,from.y,-from.svx - from.sax / 2,-from.vy - from.ay / 2,0,from.height)){ //From left
-						from.vy *= .5;
-						from.svy *= .5;
-						from.sax *= -.1;
-						from.svx *= -.1;
-						return true;
-					} else return false;
-				} else {
-					if(segmentIntersection(from.x + from.width,from.y,to.x,to.y,from.svx + from.sax / 2,from.vy + from.ay / 2,0,to.height) ||
-					  segmentIntersection(to.x,to.y,from.x + from.width,from.y,-from.svx - from.sax / 2,-from.vy - from.ay / 2,0,from.height)){ //From left
-						from.vy *= .5;
-						from.ay *= .5;
-						from.svy *= .5;
-						from.sax *= -.1;
-						from.svx *= -.1;
-						return true;
-					} else return false;
-				}
-			} else if (from.x >= to.x + to.width){
-				if (from.y + from.height <= to.y){
-					if (segmentIntersection(from.x,from.y + from.height,to.x,to.y,from.svx + from.sax / 2,from.svy + from.say / 2,to.width,0) ||
-					   segmentIntersection(to.x,to.y,from.x,from.y + from.height,-from.svx - from.sax / 2,-from.svy - from.say / 2,from.width,0)){ //From top
-						from.vx *= .5;
-						from.svx *= .5;
-						from.say *= -.1;
-						from.svy *= -.1;
-						return true;
-					} else if(segmentIntersection(from.x,from.y,to.x + to.width,to.y,from.vx + from.ax / 2,from.vy + from.ay / 2,0,to.height) ||
-							 segmentIntersection(to.x + to.width,to.y,from.x,from.y,-from.vx - from.ax / 2,-from.vy - from.ay / 2,0,from.height)){ //From right
-						from.vy *= .5;
-						from.svy *= .5;
-						from.ax *= -.1;
-						from.vx *= -.1;
-						return true;
-					} else return false;
-				} else if (from.y >= to.y + to.height){
-					if (segmentIntersection(from.x + from.width,from.y,to.x,to.y + to.height,from.svx + from.sax / 2,from.vy + from.ay / 2,to.width,0) ||
-					   segmentIntersection(from.x,from.y,to.x,to.y + to.height,from.vx + from.ax / 2,from.vy + from.ay / 2,to.width,0)){ //Bottom
-						from.vx *= .5;
-						from.svx *= .5;
-						from.ay *= -.1;
-						from.vy *= -.1;
-						return true;
-					} else if(segmentIntersection(from.x,from.y,to.x + to.width,to.y,from.vx + from.ax / 2,from.vy + from.ay / 2,0,to.height) ||
-							 segmentIntersection(to.x + to.width,to.y,from.x,from.y,-from.vx - from.ax / 2,-from.vy - from.ay / 2,0,from.height)){  //Right
-						from.vy *= .5;
-						from.svy *= .5;
-						from.ax *= -.1;
-						from.vx *= -.1;
-						return true;
-					} else return false;
-				} else {
-					if(segmentIntersection(from.x,from.y,to.x + to.width,to.y,from.vx + from.ax / 2,from.vy + from.ay / 2,0,to.height) ||
-							 segmentIntersection(to.x + to.width,to.y,from.x,from.y,-from.vx - from.ax / 2,-from.vy - from.ay / 2,0,from.height)){ //Right
-						from.vy *= .5;
-						from.svy *= .5;
-						from.ax *= -.1;
-						from.vx *= -.1;
-						return true;
-					} else return false;
-				}
-			} else {
-				if ( from.y + from.height <= to.y){
-					if (segmentIntersection(from.x,from.y + from.height,to.x,to.y,from.vx + from.ax / 2,from.svy + from.say / 2,to.width,0) ||
-					   segmentIntersection(to.x,to.y,from.x,from.y + from.height,-from.vx - from.ax / 2,-from.svy - from.say / 2,from.width,0)){ //Top
-						from.vx *= .5;
-						from.ax *= .5;
-						from.svx *= .5;
-						from.sax *= .5;
-						from.say *= -.1;
-						from.svy *= -.1;
-						boef = true;
-						return true;
-					} else return false;
-				} else if (from.y >= to.y + to.height){
-					if (segmentIntersection(from.x,from.y,to.x,to.y + to.height,from.vx + from.ax / 2,from.vy + from.ay / 2,to.width,0) ||
-					   segmentIntersection(to.x,to.y + to.height,from.x,from.y,-from.vx - from.ax / 2,-from.vy - from.ay / 2,from.width,0)){ //Bottom
-						from.vx *= .5;
-						from.ax *= .5;
-						from.svx *= .5;
-						from.sax *= .5;
-						from.ay *= -.1;
-						from.vy *= -.1;
-						return true;
-					}
-				} else {
-					return true;
-				}
-			}
-		break;
 		case 1:
-			var vx  = from.vx  + from.ax  * .5 - to.svx  - to.sax  * .5;
-			var vy  = from.vy  + from.ay  * .5 - to.svy  - to.say  * .5;
-			var svx = from.svx + from.sax * .5 - to.vx   - to.ax   * .5;
-			var svy = from.svy + from.say * .5 - to.vy   - to.ay   * .5;
-			var ax  =  vx / (from.invMass + to.invMass);
-			var ay  =  vy / (from.invMass + to.invMass);
-			var sax = svx / (from.invMass + to.invMass);
-			var say = svy / (from.invMass + to.invMass);
-			if (from.x + from.width <= to.x){
-				if (from.y + from.height <= to.y){
-					if (segmentIntersection(from.x,from.y + from.height,to.x,to.y, vx, svy,to.width,0) ||
-					    segmentIntersection(to.x,to.y,from.x,from.y + from.height,-vx,-svy,from.width,0)){ //From top
+			if(!from || !to) return false;
+		  if(!aabb(from.po.x1,from.po.y1,from.po.width,from.po.height,to.po.x1,to.po.y1,to.po.width,to.po.height)) return false;
+			var im = 1 / (from.po.invMass + to.po.invMass);
+			var m1 = im * to.po.invMass;
+			var m2 = im * from.po.invMass;
+			var pen;
 
-						from.say = 0;
-						from.svy -= say * from.invMass;
-						to.ay = 0;
-						to.vy += say * to.invMass;
-						return true;
-					} else if(segmentIntersection(from.x + from.width,from.y,to.x,to.y,svx,vy,0,to.height) ||
-						 segmentIntersection(to.x,to.y,from.x + from.width,from.y,-svx,-vy,0,from.height)){ //From left
-						from.sax = 0;
-						from.svx -= sax * from.invMass;
-						to.ax = 0;
-						to.vx += sax * to.invMass;
-						return true;
-					} else return false;
-				} else if (from.y >= to.y + to.height){
-					if (segmentIntersection(from.x,from.y,to.x,to.y + to.height,vx,svy,to.width,0) ||
-					   segmentIntersection(to.x,to.y + to.height,from.x,from.y,-vx,-svy,from.width,0)){  //From bottom
-						from.ay = 0;
-						from.vy -= ay * from.invMass;
-						to.say = -0;
-						to.svy += ay * to.invMass;
-						console.log(segmentIntersection(to.x,to.y + to.height,from.x,from.y,-vx,-svy,from.width,0));
-						return true;
-					} else if(segmentIntersection(from.x + from.width,from.y,to.x,to.y,svx,vy,0,to.height) ||
-						 segmentIntersection(to.x,to.y,from.x + from.width,from.y,-svx,-vy,0,from.height)){ //From left
-						from.sax = -0;
-						from.svx -= sax * from.invMass;
-						to.ax = 0;
-						to.vx += sax * to.invMass;
-						return true;
-					} else return false;
+			var dx = from.x - to.x;
+			var dy = from.y - to.y;
+
+			if(dx > dy){
+				if(dx > 0) {
+					pen = from.po.x1 - to.po.x2;
+					from.po.translate(-pen * m1,0);
+					to.po.translate(pen * m2,0);
 				} else {
-					if(segmentIntersection(from.x + from.width,from.y,to.x,to.y,svx,svy,0,to.height) ||
-					  segmentIntersection(to.x,to.y,from.x + from.width,from.y,-svx,-svy,0,from.height)){ //From left
-						from.sax = -0;
-						from.svx -= sax * from.invMass;
-						to.ax = 0;
-						to.vx += sax * to.invMass;
-						return true;
-					} else return false;
+					pen = from.po.x2 - to.po.x1;
+					from.po.translate(-pen * m1,0);
+					to.po.translate(pen * m2,0);
 				}
-			} else if (from.x >= to.x + to.width){
-				if (from.y + from.height <= to.y){
-					if (segmentIntersection(from.x,from.y + from.height,to.x,to.y,vx,svy,to.width,0) ||
-					   segmentIntersection(to.x,to.y,from.x,from.y + from.height,-vx,-svy,from.width,0)){ //From top
-						from.say = -0;
-						from.svy -= say * from.invMass;
-						to.ay = 0;
-						to.vy += say * to.invMass;
-						return true;
-					} else if(segmentIntersection(from.x,from.y,to.x + to.width,to.y,vx,vy,0,to.height) ||
-						 segmentIntersection(to.x + to.width,to.y,from.x,from.y,-vx,-vy,0,from.height)){ //From right
-						from.ax = 0;
-						from.vx -= ax * from.invMass;
-						to.sax = -0;
-						to.svx += ax * to.invMass;
-						return true;
-					} else return false;
-				} else if (from.y >= to.y + to.height){
-					if (segmentIntersection(from.x + from.width,from.y,to.x,to.y + to.height,svx,vy,to.width,0) ||
-					   segmentIntersection(from.x,from.y,to.x,to.y + to.height,vx,vy,to.width,0)){ //Bottom
-						from.ay = 0;
-						from.vy -= ay * from.invMass;
-						to.say = -0;
-						to.svy += ay * to.invMass;
-						return true;
-					} else if(segmentIntersection(from.x,from.y,to.x + to.width,to.y,vx,vy,0,to.height) ||
-						 segmentIntersection(to.x + to.width,to.y,from.x,from.y,-vx,-vy,0,from.height)){  //Right
-						from.ax = 0;
-						from.vx -= ax * from.invMass;
-						to.sax = -0;
-						to.svx += ax * to.invMass;
-						return true;
-					} else return false;
+			} else{
+				if(dy > 0) {
+					pen = from.po.y1 - to.po.y2;
+					from.po.translate(0,-pen * m1);
+					to.po.translate(0,pen * m2);
 				} else {
-					if(segmentIntersection(from.x,from.y,to.x + to.width,to.y,vx,vy,0,to.height) ||
-					  segmentIntersection(to.x + to.width,to.y,from.x,from.y,-vx,-vy,0,from.height)){ //Right
-						from.ax = 0;
-						from.vx -= ax * from.invMass;
-						to.sax = -0;
-						to.svx += ax * to.invMass;
-						return true;
-					} else return false;
-				}
-			} else {
-				if ( from.y + from.height <= to.y){
-					if (segmentIntersection(from.x,from.y + from.height,to.x,to.y,vx,svy,to.width,0) ||
-					   segmentIntersection(to.x,to.y,from.x,from.y + from.height,-vx,-svy,from.width,0)){ //Top
-						from.say = -0;
-						from.svy -= say * from.invMass;
-						to.ay = 0;
-						to.vy += say * to.invMass;
-						return true;
-					} else return false;
-				} else if (from.y >= to.y + to.height){
-					if (segmentIntersection(from.x,from.y,to.x,to.y + to.height,vx,vy,to.width,0) ||
-					   segmentIntersection(to.x,to.y + to.height,from.x,from.y,-vx,-vy,from.width,0)){ //Bottom
-						from.ay = 0;
-						from.vy -= ay * from.invMass;
-						to.say = -0;
-						to.svy += ay * to.invMass;
-						return true;
-					}
-				} else {
-					return true;
+					pen = from.po.y2 - to.po.y1;
+					from.po.translate(0,-pen * m1);
+					to.po.translate(0,pen * m2);
 				}
 			}
+			console.log(from.hit(to));
+			return true;
+
 		break;
 	}
 }
@@ -529,6 +325,7 @@ function Bih2d(length){
 	this.search = search;
 	function search(element){
 		if(this.empty) return 0;
+		if(!element) throw "Invalid search request";
 		this.temparray.length = 0;
 		var currentpoint = 1;
 		var direction = 0;
@@ -609,7 +406,7 @@ this.segmentIntersection = segmentIntersection;
 
 return{
 	Bih2d: this.Bih2d,
-	narrowPhase: this.narowPhase,
+	narrowPhase: this.narrowPhase,
 	Rect: this.Rect,
 	segmentIntersection: this.segmentIntersection
 }
