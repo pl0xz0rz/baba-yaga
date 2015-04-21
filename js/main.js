@@ -42,7 +42,7 @@ require([
   Menu.menuList[3] = prehra;
   Menu.menuList[5] = vyhra;
 
-  console.log(zombie);
+  console.log(skull);
 
   var kbMap = new Array(256);
 

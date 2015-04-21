@@ -77,7 +77,7 @@ define([
       });
     }
 
-    function draw(t=0){
+    function draw(t){
       var context = this.drawcontext;
       context.fillStyle = "#336666";
       context.fillRect(0,0,600,400);
@@ -137,7 +137,7 @@ define([
       console.log(AIscript);
 
       this.undeadleader = new AIscript.DirectorAI(100,1,[RTSunits.normalzombie],this.world.layers[2]);
-      for(var i=1;i<16;++i){
+      for(var i=1;i<4;++i){
         this.world.layers[i].active = true;
         this.world.layers[i].visible = true;
       }
@@ -157,7 +157,7 @@ define([
         break;
         case 2:
           Gamestate.active = 0;
-          Menu.switchScr(3);
+          Menu.switchScr(5);
         break;
         case 3:
         Gamestate.active = 0;

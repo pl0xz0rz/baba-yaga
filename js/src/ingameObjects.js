@@ -161,11 +161,11 @@ function GenericMob(x,y,t,str,hp,mana){
 		this.framephase -= this.animdt;
 	}
    	switch(this.t){
-		case 0: context.drawImage(witch,this.width*this.frame,this.height*this.currentaction,this.width,this.height,this.x-ox-this.width/2,this.y-oy-this.height/2,this.width,this.height);
+		case 0: context.drawImage(document.getElementById("witch"),this.width*this.frame,this.height*this.currentaction,this.width,this.height,this.x-ox-this.width/2,this.y-oy-this.height/2,this.width,this.height);
 		break;
-		case 1: context.drawImage(zombie,this.width*this.frame,this.height*this.currentaction,this.width,this.height,this.x-ox-this.width/2,this.y-oy-this.height/2,this.width,this.height);
+		case 1: context.drawImage(document.getElementById("zombie"),this.width*this.frame,this.height*this.currentaction,this.width,this.height,this.x-ox-this.width/2,this.y-oy-this.height/2,this.width,this.height);
 		break;
-		case 2: context.drawImage(skull,this.width*this.frame,this.height*this.currentaction,this.width,this.height,this.x-ox-this.width/2,this.y-oy-this.height/2,this.width,this.height);
+		case 2: context.drawImage(document.getElementById("skull"),this.width*this.frame,this.height*this.currentaction,this.width,this.height,this.x-ox-this.width/2,this.y-oy-this.height/2,this.width,this.height);
 		break;
 		default: 	context.fillStyle="#999999"; context.fillRect(this.x - ox - this.width / 2,this.y - oy - this.height / 2,this.po.width, this.po.height);
 

@@ -1,16 +1,11 @@
 define(["hittest"],function(Hittest){
 
 function world(){
-  this.layers = new Array(16);
-  for(var i=1;i<11;++i){
-    this.layers[i] = new worldlayer();
+  this.layers = new Array();
+  for(var i=1;i<4;++i){
+    this.layers[i] = new worldlayer(1);
   }
   this.layers[0] = new worldlayer(0);
-  this.layers[15] = new worldlayer(2);
-  this.layers[14] = new worldlayer(2);
-  this.layers[13] = new worldlayer(2);
-  this.layers[12] = new worldlayer(2);
-  this.layers[11] = new worldlayer(2);
 
   this.layers[1].flags |= 0xc;
   this.layers[2].flags |= 0xa;
@@ -26,9 +21,9 @@ function world(){
   }
 
   this.draw = draw;
-  function draw(context,xA,yA,widthA,heightA,xB,yB,widthB,heightB,t=0){
+  function draw(context,xA,yA,widthA,heightA,xB,yB,widthB,heightB,t){
     var a;
-    for(var i=0;i<16;++i){
+    for(var i=0;i<4;++i){
       if(this.layers[i].visible){
         a=this.layers[i].contents;
         for(j=a.length+1;j>=0;--j){
@@ -42,15 +37,15 @@ function world(){
 
   this.sort = sort;
   function sort(){
-      for(var i=1;i<16;++i){
+      for(var i=1;i<4;++i){
         this.layers[i].sort();
       }
   }
 
   this.loop = loop;
-  function loop(dt=1){
+  function loop(dt){
     var a;
-    for(var i=0;i<16;++i){
+    for(var i=0;i<4;++i){
 
       if(this.layers[i].active){
         a=this.layers[i].contents;
@@ -64,9 +59,9 @@ function world(){
     }
     this.sort();
     var k=1;
-    for(var i=0;i<16;++i){
+    for(var i=0;i<4;++i){
       if(this.layers[i].active)
-      for(var j=0;j<16;++j){
+      for(var j=0;j<4;++j){
           if(this.layers[j].flags & k) {
             this.layers[j].hittestlayer(this.layers[i]);
         }
@@ -83,7 +78,7 @@ TODO: Write a constraint solver
 }
 
 
-function worldlayer(o=1,l=200){    //0 is static objects only, 1 is dynamic objects, 2 is bullets
+function worldlayer(o){    //0 is static objects only, 1 is dynamic objects, 2 is bullets
   this.static = this.bullets = this.visible = this.active = false;
   if(o==1) this.dynamic = true;
   if(o==2) this.bullets = true;
@@ -92,12 +87,11 @@ function worldlayer(o=1,l=200){    //0 is static objects only, 1 is dynamic obje
   Least significant 16 bits: Collision flags
 
   */
-  this.l = l;
   this.rl = 0;
   if(this.bullets){
     this.contents = new Array();
   } else {
-    this.helpstructure = new Hittest.Bih2d(l);
+    this.helpstructure = new Hittest.Bih2d(200);
     this.contents = this.helpstructure.buffer;
   }
 
